@@ -1,0 +1,24 @@
+name: Özellik Önerisi (Feature Request)
+description: Proje için yeni bir özellik veya geliştirme önerin.
+title: "[ÖNERİ]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Çözülmek İstenen Problem
+      description: Bu öneri hangi ihtiyaca veya probleme karşılık geliyor?
+    validations:
+      required: true
+  - type: textarea
+    id: cozum-onerisi
+    attributes:
+      label: Önerilen Çözüm / Davranış
+      description: Özelliğin nasıl çalışmasını öneriyorsunuz?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatifler
+    attributes:
+      label: Değerlendirilen Alternatifler
+      description: Varsa değerlendirdiğiniz diğer yaklaşımlar.

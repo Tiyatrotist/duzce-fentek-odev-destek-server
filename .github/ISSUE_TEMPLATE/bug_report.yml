@@ -1,0 +1,42 @@
+name: Hata Bildirimi (Bug Report)
+description: Karşılaştığınız bir hatayı veya beklenmeyen davranışı bildirin.
+title: "[HATA]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Sorunu en kısa sürede çözebilmemiz için lütfen adımları eksiksiz doldurun.
+  - type: textarea
+    id: ne-oldu
+    attributes:
+      label: Ne oldu?
+      description: Karşılaştığınız hatayı net bir şekilde açıklayın.
+    validations:
+      required: true
+  - type: textarea
+    id: yeniden-uretim
+    attributes:
+      label: Yeniden Üretim Adımları
+      description: Hatayı yeniden tetiklemek için izlenen adımlar.
+      placeholder: |
+        1. '...' uç noktasına POST isteği atın
+        2. '...' gövdesini gönderin
+        3. '...' hatasını görün
+    validations:
+      required: true
+  - type: textarea
+    id: beklenen-davranis
+    attributes:
+      label: Beklenen Davranış
+      description: Olması gereken davranış neydi?
+    validations:
+      required: true
+  - type: input
+    id: cevre
+    attributes:
+      label: Çalışma Ortamı
+      description: Node.js sürümü, işletim sistemi vb.
+      placeholder: "Node.js v24.12.0, Windows 11"
+    validations:
+      required: true

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Güvenlik Açığı Bildirimi
+    url: https://github.com/Tiyatrotist/duzce-fentek-odev-destek-server/security/advisories
+    about: Lütfen güvenlik açıklarını genel issue açarak değil, güvenlik bildirimi üzerinden iletin.
