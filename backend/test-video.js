@@ -16,7 +16,7 @@ process.env.GUVENILIR_GUNLUK = "500";
 process.env.VIDEO_GUNLUK_DEPO_MB = "1"; // günlük depolama (MB)
 process.env.JWT_SECRET = "test-video-gizli-anahtar";
 process.env.SINAV_KEY = "test-anahtari-123";
-try { require("fs").unlinkSync("./test-video.db"); } catch { /* ilk çalışsa yok */ }
+for (const ek of ["", "-wal", "-shm"]) { try { require("fs").unlinkSync("./test-video.db" + ek); } catch {} }
 try { require("fs").rmSync("./test-video-depo", { recursive: true, force: true }); } catch { /* temizlik */ }
 
 const { describe, it, before, after } = require("node:test");
@@ -115,7 +115,7 @@ after(async () => {
   if (sunucu && sunucu.close) await new Promise(coz => sunucu.close(coz));
   try { require("./db.js").close(); } catch { /* zaten kapalı */ }
   await new Promise(r => setTimeout(r, 100));
-  try { fs.unlinkSync("./test-video.db"); } catch { /* temizlik */ }
+  for (const ek of ["", "-wal", "-shm"]) { try { fs.unlinkSync("./test-video.db" + ek); } catch {} }
   try { fs.rmSync("./test-video-depo", { recursive: true, force: true }); } catch { /* temizlik */ }
 });
 

@@ -15,7 +15,7 @@ process.env.SINAV_KEY = "test-anahtari-123"; // havuz açık sayılsın
 process.env.VIDEO_KUYRUK_KAPALI = "1"; // video kuyruğu döngüsü kapalı (deterministik)
 process.env.VIDEO_STORE = "./test-kutuphane-depo"; // ayrı karantina deposu
 process.env.NODE_ENV = "test";
-try { require("fs").unlinkSync("./test-kutuphane.db"); } catch { /* ilk çalışsa yok */ }
+for (const ek of ["", "-wal", "-shm"]) { try { require("fs").unlinkSync("./test-kutuphane.db" + ek); } catch {} }
 
 const { describe, it, before, after } = require("node:test");
 const assert = require("node:assert");
@@ -110,7 +110,7 @@ after(async () => {
   if (sunucu) await new Promise(coz => sunucu.close(coz)); // kapanışı BEKLE (zorla sonlandırma YOK)
   try { require("./db.js").close(); } catch { /* zaten kapalıysa geç */ }
   await new Promise(r => setTimeout(r, 100));
-  try { fs.unlinkSync("./test-kutuphane.db"); } catch { /* temizlik */ }
+  for (const ek of ["", "-wal", "-shm"]) { try { fs.unlinkSync("./test-kutuphane.db" + ek); } catch {} }
   try { fs.rmSync("./test-kutuphane-depo", { recursive: true, force: true }); } catch { /* temizlik */ }
 });
 

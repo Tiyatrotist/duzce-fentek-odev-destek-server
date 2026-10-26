@@ -2,9 +2,10 @@
 // Çalıştırma: backend klasöründe `npm test`
 // Kapsam: kayıt→giriş→soru→yorum→en iyi→puan→bildirim + tekrar şikayet/puan + askıdaki oturum + yetkisiz soru + geçersiz kimlik + XSS kaçış
 process.env.DB_PATH = "./test-odevagi.db"; // test defteri (gerçek odevagi.db değil!)
-process.env.PORT = "3131"; // test kapısı (gerçek 3001 değil!)
+process.env.PORT = "3131";
+process.env.JWT_SECRET = process.env.JWT_SECRET || "test-odevagi-gizli-jwt-anahtari-12345"; // test kapısı (gerçek 3001 değil!)
 process.env.SINAV_KEY = "test-anahtari-123"; // havuz açık sayılsın (boş havuz, eksik yok)
-try { require("fs").unlinkSync("./test-odevagi.db"); } catch { /* ilk çalışsa yok */ }
+for (const ek of ["", "-wal", "-shm"]) { try { require("fs").unlinkSync("./test-odevagi.db" + ek); } catch {} }
 
 const { describe, it, before, after } = require("node:test"); // Node'un kendi testçisi
 const assert = require("node:assert"); // karşılaştırma
@@ -33,7 +34,7 @@ after(async () => {
   await new Promise(coz => sunucu.close(coz)); // kapanışı BEKLE (zorla sonlandırma/process.exit YOK)
   try { require("./db.js").close(); } catch { /* zaten kapalıysa geç */ } // DB tutamağını bırak (Windows kilit sorunu)
   await new Promise(r => setTimeout(r, 100));
-  try { require("fs").unlinkSync("./test-odevagi.db"); } catch { /* temizlik */ }
+  for (const ek of ["", "-wal", "-shm"]) { try { require("fs").unlinkSync("./test-odevagi.db" + ek); } catch {} }
 });
 
 describe("uçtan uca akış", () => {
