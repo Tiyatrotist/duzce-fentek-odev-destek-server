@@ -348,8 +348,21 @@ function adimOdakla(n, mesaj, alan) { // adımı aç + ilgili alana git ve odakl
   }
   if (mesaj) toast(mesaj); // neden durulduğu söylenir
 }
+function sihirbazAc(turAdi = null) {
+  const alan = document.getElementById("soruSihirbazAlani");
+  const tetik = document.getElementById("soruTetikleyici");
+  if (alan) alan.style.display = "";
+  if (tetik) tetik.style.display = "none";
+  if (turAdi) tur.value = turAdi;
+}
+function sihirbazKapat() {
+  const alan = document.getElementById("soruSihirbazAlani");
+  const tetik = document.getElementById("soruTetikleyici");
+  if (alan) alan.style.display = "none";
+  if (tetik) tetik.style.display = "";
+}
 function paylasimBaslat(turAdi) { // hızlı paylaşım: yazı türü KORUNUR, geçerli adımdan devam edilir
-  if (turAdi) tur.value = turAdi; // "Soru" / "Konu Özeti" niyeti
+  sihirbazAc(turAdi);
   sayfaGoster("akis");
   window.scrollTo(0, 0);
   if (!ders.value) return adimOdakla(1, "Önce ders seç!"); // ders 1. adımda: oraya dön + seçiciye odak
@@ -399,7 +412,7 @@ btnEkle.onclick = async () => {
   if (!baslik.value) return adimOdakla(2, "Başlık yaz!"); // başlık 2. adımda
   if (!etikMi(baslik.value + " " + aciklama.value)) { const bHatali = !etikMi(baslik.value); return adimOdakla(2, "🚫 Etik kurallara aykırı!", bHatali ? baslik : aciklama); } // ikisi de 2. adımda; HATALI alana git
   const veri = { tur: tur.value, ders: ders.value, sinif: sinif.value, baslik: baslik.value, aciklama: aciklama.value, resimler: [...mevcutResimler, ...seciliResimler] }; // eski + yeni resimler
-  const temizleForm = () => { baslik.value = ""; aciklama.value = ""; seciliResimler = []; mevcutResimler = []; resimler.value = ""; onizThumbCiz(); adimGit(1); }; // formu başa al
+  const temizleForm = () => { baslik.value = ""; aciklama.value = ""; seciliResimler = []; mevcutResimler = []; resimler.value = ""; onizThumbCiz(); adimGit(1); sihirbazKapat(); }; // formu başa al
   if (MOD === "sunucu") { // sunucuya yaz (çift tıklama kilitli)
     btnEkle.disabled = true;
     try {
@@ -494,88 +507,130 @@ function listeleOdev(filtre = "") {
   const goster = liste.slice(0, gorunen); // sayfalı göster
   if (MOD === "yerel") btnDaha.style.display = liste.length > goster.length ? "" : "none"; // yerelde devam kontrolü
   goster.forEach(o => { // sayfalı göster
-    const div = document.createElement("div"); div.className = "kutu";
+    const div = document.createElement("div"); div.className = "kutu odevKarti";
     const harf = (o.isim || o.yazar || "A")[0].toUpperCase(); // avatar harfi
     const isim = o.isim || o.yazar || "Anonim"; // sunucu "yazar" der
-    // İsim tıklanabilir: profilini açar + ders renk rozeti + durum rozeti (hepsi güvenli metin)
-    div.innerHTML = `<div class="postBas"><div class="avatar">${htmlKacis(harf)}</div><div><b><a href="#" data-kisi="${htmlKacis(isim)}">${htmlKacis(isim)}</a></b><br><span class="ders-etiket ders-${htmlKacis(o.ders)}">${htmlKacis(o.ders)}</span> <span class="durum ${o.cozuldu ? "cozuldu" : "bekliyor"}">${o.cozuldu ? "Çözüldü" : "Çözülmedi"}</span><br><small>${htmlKacis(o.tur) || "Soru"} • ${htmlKacis(o.sinif) || ""} • ${htmlKacis(o.tarih) || ""}</small></div></div><b>${htmlKacis(o.baslik)}</b><p>${htmlKacis(o.aciklama)}</p><div class="etkilesim"><span>❤ ${(o.begen || []).length}</span><span>💬 ${(o.cevaplar || []).length}</span></div>`;
-    if (aktif && isim !== aktif.ad) { // İnsta usulü: ismin yanında takip butonu
+
+    // 1. Üst Başlık (Yazar, rozetler, ders, durum ve takip)
+    const ust = document.createElement("div"); ust.className = "postBas kartUst";
+    ust.innerHTML = `<div class="kartYazar"><div class="avatar">${htmlKacis(harf)}</div><div class="kartYazarDetay"><b><a href="#" data-kisi="${htmlKacis(isim)}">${htmlKacis(isim)}</a></b><div class="kartMeta"><span>${htmlKacis(o.tur) || "Soru"}</span>${o.sinif ? `<span>• ${htmlKacis(o.sinif)}</span>` : ""}${o.tarih ? `<span>• ${htmlKacis(o.tarih)}</span>` : ""}</div></div></div><div class="kartRozetler"><span class="ders-etiket ders-${htmlKacis(o.ders)}">${htmlKacis(o.ders)}</span> <span class="durum ${o.cozuldu ? "cozuldu" : "bekliyor"}">${o.cozuldu ? "✅ Çözüldü" : "⏳ Bekliyor"}</span></div>`;
+    if (aktif && isim !== aktif.ad) {
       const tb = document.createElement("button"); tb.className = "takipMini";
       tb.textContent = takipEtiket(isim);
       tb.onclick = () => takipDegistir(isim);
-      div.querySelector(".postBas").appendChild(tb);
+      ust.querySelector(".kartRozetler").appendChild(tb);
     }
-    if ((o.resimler || []).length) { // kaydırmalı galeri (çok resim yan yana)
+    div.appendChild(ust);
+
+    // 2. Gövde (Başlık, Açıklama, Görseller)
+    const govde = document.createElement("div"); govde.className = "kartGovde";
+    govde.innerHTML = `<h3 class="kartBaslik">${htmlKacis(o.baslik)}</h3><p class="kartMetin">${htmlKacis(o.aciklama)}</p>`;
+    if ((o.resimler || []).length) {
       const gal = document.createElement("div"); gal.className = "galeri";
-      o.resimler.forEach(r => { if (!gorselGuvenli(r)) return; const img = document.createElement("img"); img.src = r; img.alt = "gönderi resmi"; img.loading = "lazy"; img.ondblclick = e => { kalpGoster(e.clientX, e.clientY); bb.click(); }; gal.appendChild(img); }); // çift tık = beğen
-      div.appendChild(gal);
+      o.resimler.forEach(r => {
+        if (!gorselGuvenli(r)) return;
+        const img = document.createElement("img"); img.src = r; img.alt = "gönderi resmi"; img.loading = "lazy";
+        img.ondblclick = e => { kalpGoster(e.clientX, e.clientY); bb.click(); };
+        gal.appendChild(img);
+      });
+      govde.appendChild(gal);
     }
-    // Yorum yaz
-    const yi = document.createElement("input"); yi.placeholder = "Çözümü anlat";
-    const yb = document.createElement("button"); yb.innerHTML = '<i data-lucide="message-circle"></i>Yorum';
-    yb.onclick = async () => {
-      if (!aktif) return toast("Giriş yap!"); if (!yi.value || !etikMi(yi.value)) return toast("Yorum yaz / etik olsun!");
-      if (MOD === "sunucu") { try { await api.yorumEkle(o.id, yi.value); if (isim !== aktif.ad) bildir(isim, `${aktif.ad} gönderine yorum yaptı: ${o.baslik}`); await tazeCiz(); } catch (e) { toast(e.message); } return; }
-      o.cevaplar.push({ id: idUret(), yazar: aktif.ad, metin: yi.value, yanitlar: [] }); yaz("odevler", odevler); // yerel ekle
-      if (isim !== aktif.ad) bildir(isim, `${aktif.ad} gönderine yorum yaptı: ${o.baslik}`); // bildirim
-      listeleOdev(ara.value); profilGoster();
-    };
-    // Beğeni (bir kişi bir kez)
-    const bb = document.createElement("button"); bb.innerHTML = (o.begen || []).includes(aktif?.ad) ? '<i data-lucide="heart-off"></i>Beğenme' : '<i data-lucide="heart"></i>Beğen';
+    div.appendChild(govde);
+
+    // Video Çözüm Alanı
+    const vidKutusu = document.createElement("div"); vidKutusu.className = "kartVideoKutusu";
+    div.appendChild(vidKutusu);
+    if (typeof videoAlanCiz === "function") videoAlanCiz(vidKutusu, o);
+
+    // 3. Etkileşim ve Aksiyon Çubuğu
+    const aksiyonBar = document.createElement("div"); aksiyonBar.className = "kartAksiyonBar";
+    const solGrup = document.createElement("div"); solGrup.className = "kartAksiyonSol";
+    const sagGrup = document.createElement("div"); sagGrup.className = "kartAksiyonSag";
+
+    // Beğeni Butonu
+    const begenmis = (o.begen || []).includes(aktif?.ad);
+    const bb = document.createElement("button");
+    bb.className = "aksiyonBtn" + (begenmis ? " aktif" : "");
+    bb.innerHTML = `<i data-lucide="${begenmis ? "heart-off" : "heart"}"></i> <span>${(o.begen || []).length}</span>`;
+    bb.title = begenmis ? "Beğenmekten Vazgeç" : "Beğen";
     bb.onclick = async () => {
       if (!aktif) return toast("Giriş yap!");
       if (MOD === "sunucu") { try { await api.begen(o.id); await tazeCiz(); } catch (e) { toast(e.message); } return; }
       o.begen = o.begen || [];
-      const i = o.begen.indexOf(aktif.ad); i >= 0 ? o.begen.splice(i, 1) : o.begen.push(aktif.ad); // aç/kapa
+      const i = o.begen.indexOf(aktif.ad); i >= 0 ? o.begen.splice(i, 1) : o.begen.push(aktif.ad);
       yaz("odevler", odevler); listeleOdev(ara.value);
     };
-    // Kaydet
-    const kb = document.createElement("button"); kb.innerHTML = '<i data-lucide="bookmark"></i>Kaydet';
+
+    // Çözümler / Yorumlar Butonu
+    const ybBtn = document.createElement("button");
+    ybBtn.className = "aksiyonBtn";
+    ybBtn.innerHTML = `<i data-lucide="message-circle"></i> <span>${(o.cevaplar || []).length} Çözüm</span>`;
+    ybBtn.title = "Çözümlere Git / Çözüm Yaz";
+    ybBtn.onclick = () => yi.focus();
+
+    // Kaydet Butonu
+    const kb = document.createElement("button");
+    kb.className = "aksiyonBtn";
+    kb.innerHTML = '<i data-lucide="bookmark"></i> <span>Kaydet</span>';
     kb.onclick = async () => {
       if (!aktif) return toast("Giriş yap!");
       if (MOD === "sunucu") { try { const r = await api.kaydet(o.id); toast(r.kaydettim ? "Kaydedildi! Profilde görürsün." : "Kayıtlardan çıkarıldı."); } catch (e) { toast(e.message); } return; }
       const me = kullanicilar.find(k => k.ad === aktif.ad);
-      me.kaydet = me.kaydet || []; me.kaydet.includes(o.id) ? me.kaydet.splice(me.kaydet.indexOf(o.id), 1) : me.kaydet.push(o.id); // aç/kapa
+      me.kaydet = me.kaydet || []; me.kaydet.includes(o.id) ? me.kaydet.splice(me.kaydet.indexOf(o.id), 1) : me.kaydet.push(o.id);
       yaz("kullanicilar", kullanicilar); toast("Kaydedilenler güncellendi!");
     };
-    // Şikayet (nedenli)
-    const ss = document.createElement("select"); ["Küfür/hakaret", "Ders dışı", "Reklam/spam", "Diğer"].forEach(n => { const op = document.createElement("option"); op.textContent = n; ss.appendChild(op); });
-    const sb = document.createElement("button"); sb.className = "ikincil"; sb.innerHTML = '<i data-lucide="flag"></i>Şikayet';
+
+    solGrup.append(bb, ybBtn, kb);
+
+    // Sahibi veya admin: Düzenle + Sil
+    if (aktif && (aktif.ad === isim || aktif.rol === "Admin")) {
+      const db2 = document.createElement("button"); db2.className = "aksiyonBtn ikincil"; db2.innerHTML = '<i data-lucide="pencil"></i>'; db2.title = "Düzenle";
+      db2.onclick = () => {
+        tur.value = o.tur || "Soru"; ders.value = o.ders; sinif.value = o.sinif || "5. Sınıf";
+        baslik.value = o.baslik; aciklama.value = o.aciklama;
+        mevcutResimler = [...(o.resimler || [])]; seciliResimler = []; resimler.value = ""; onizThumbCiz();
+        duzenlenenId = o.id; btnEkle.textContent = "Güncelle";
+        sihirbazAc(o.tur); window.scrollTo(0, 0); toast("Düzenliyorsun, bitince Güncelle!");
+      };
+      const silb = document.createElement("button"); silb.className = "tehlike aksiyonBtn"; silb.innerHTML = '<i data-lucide="trash-2"></i>'; silb.title = "Sil";
+      silb.onclick = async () => {
+        if (!window.confirm("Bu gönderiyi silmek istediğinden emin misin?")) return;
+        if (MOD === "sunucu") { try { await api.gonderiSil(o.id); await tazeCiz(); toast("Silindi."); } catch (e) { toast(e.message); } return; }
+        odevler = odevler.filter(x => x.id !== o.id); yaz("odevler", odevler); listeleOdev(ara.value); toast("Silindi.");
+      };
+      sagGrup.append(db2, silb);
+    }
+
+    // Şikayet Açılır Seçimi
+    const ss = document.createElement("select");
+    ss.className = "sikayetSecim";
+    ["Küfür/hakaret", "Ders dışı", "Reklam/spam", "Diğer"].forEach(n => { const op = document.createElement("option"); op.textContent = n; ss.appendChild(op); });
+    const sb = document.createElement("button"); sb.className = "ikincil aksiyonBtn"; sb.innerHTML = '<i data-lucide="flag"></i>'; sb.title = "Şikayet";
     sb.onclick = async () => {
       if (!aktif) return toast("Giriş yap!");
       if (MOD === "sunucu") { try { await api.sikayet(o.id, ss.value); toast("Şikayetin alındı."); await tazeCiz(); } catch (e) { toast(e.message); } return; }
       o.sikayet = (o.sikayet || 0) + 1;
       sikayetler.push({ id: idUret(), hedefId: o.id, neden: ss.value, bildiren: aktif.ad, tarih: new Date().toLocaleString("tr-TR") });
-      const sahip = kullanicilar.find(k => k.ad === isim); // sahibine uyarı
-      if (sahip) { sahip.uyari = (sahip.uyari || 0) + 1; if (sahip.uyari >= 3) sahip.askida = true; } // 3 uyarı = askı
+      const sahip = kullanicilar.find(k => k.ad === isim);
+      if (sahip) { sahip.uyari = (sahip.uyari || 0) + 1; if (sahip.uyari >= 3) sahip.askida = true; }
       yaz("odevler", odevler); yaz("sikayetler", sikayetler); yaz("kullanicilar", kullanicilar);
       toast("Şikayetin alındı."); listeleOdev(ara.value);
     };
-    div.append(yi, yb, bb, kb, ss, sb);
-    // Sahibi veya admin: düzenle + sil
-    if (aktif && (aktif.ad === isim || aktif.rol === "Admin")) {
-      const db2 = document.createElement("button"); db2.className = "ikincil"; db2.innerHTML = '<i data-lucide="pencil"></i>Düzenle';
-      db2.onclick = () => { // formu doldur, butonu güncelleme moduna al
-        tur.value = o.tur || "Soru"; ders.value = o.ders; sinif.value = o.sinif || "5. Sınıf";
-        baslik.value = o.baslik; aciklama.value = o.aciklama;
-        mevcutResimler = [...(o.resimler || [])]; seciliResimler = []; resimler.value = ""; onizThumbCiz(); // eskiler taslağa alınır (korunur)
-        duzenlenenId = o.id; btnEkle.textContent = "Güncelle"; window.scrollTo(0, 0); toast("Düzenliyorsun, bitince Güncelle!");
-      };
-      const silb = document.createElement("button"); silb.className = "tehlike"; silb.innerHTML = '<i data-lucide="trash-2"></i>Sil';
-      silb.onclick = async () => {
-        if (MOD === "sunucu") { try { await api.gonderiSil(o.id); await tazeCiz(); toast("Silindi."); } catch (e) { toast(e.message); } return; }
-        odevler = odevler.filter(x => x.id !== o.id); yaz("odevler", odevler); listeleOdev(ara.value); toast("Silindi.");
-      };
-      div.append(db2, silb);
-    }
-    // Yorumlar + yanıtlar + en iyi cevap
+    sagGrup.append(ss, sb);
+    aksiyonBar.append(solGrup, sagGrup);
+    div.appendChild(aksiyonBar);
+
+    // 4. Çözümler ve Yanıtlar Bölümü
+    const cozumlerBolumu = document.createElement("div"); cozumlerBolumu.className = "kartCozumler";
     (o.cevaplar || []).forEach(c => {
       const p = document.createElement("div"); p.className = "cevap" + (c.enIyi ? " eniyi" : "");
-      p.innerHTML = `<b><a href="#" data-kisi="${htmlKacis(c.yazar)}">${htmlKacis(c.yazar)}</a></b>: ${htmlKacis(c.metin)}`; div.appendChild(p);
-      (c.yanitlar || []).forEach(y => { const r = document.createElement("div"); r.className = "yanit"; r.textContent = y.yazar + ": " + y.metin; div.appendChild(r); }); // textContent zaten güvenli
-      const yb2 = document.createElement("button"); yb2.className = "ikincil"; yb2.innerHTML = '<i data-lucide="reply"></i>Yanıtla'; // yanıta cevap
+      p.innerHTML = `${c.enIyi ? '<div class="enIyiRozet">🏆 En İyi Çözüm / Doğrulanmış</div>' : ''}<div class="cevapMetinSatir"><b><a href="#" data-kisi="${htmlKacis(c.yazar)}">${htmlKacis(c.yazar)}</a></b>: <span>${htmlKacis(c.metin)}</span></div>`;
+      (c.yanitlar || []).forEach(y => { const r = document.createElement("div"); r.className = "yanit"; r.textContent = y.yazar + ": " + y.metin; p.appendChild(r); });
+      const cevapAksiyon = document.createElement("div"); cevapAksiyon.className = "cevapAksiyonSatir";
+      const yb2 = document.createElement("button"); yb2.className = "ikincil miniBtn"; yb2.innerHTML = '<i data-lucide="reply"></i> Yanıtla';
       yb2.onclick = () => {
         if (!aktif) return toast("Giriş yap!");
+        const yanitKutu = document.createElement("div"); yanitKutu.className = "yanitGirdiKutusu";
         const ri = document.createElement("input"); ri.placeholder = "Yanıtın";
         const rb = document.createElement("button"); rb.textContent = "Gönder";
         rb.onclick = async () => {
@@ -583,25 +638,42 @@ function listeleOdev(filtre = "") {
           if (MOD === "sunucu") { try { await api.yanitEkle(c.id, ri.value); await tazeCiz(); } catch (e) { toast(e.message); } return; }
           c.yanitlar = c.yanitlar || []; c.yanitlar.push({ yazar: aktif.ad, metin: ri.value }); yaz("odevler", odevler); listeleOdev(ara.value);
         };
-        div.append(ri, rb); ri.focus();
+        yanitKutu.append(ri, rb); p.appendChild(yanitKutu); ri.focus();
       };
-      div.appendChild(yb2);
-      if (aktif && aktif.ad === isim && !o.cozuldu) { // sahibi en iyiyi seçer
-        const eb = document.createElement("button"); eb.innerHTML = '<i data-lucide="award"></i>En İyi Cevap';
+      cevapAksiyon.appendChild(yb2);
+      if (aktif && aktif.ad === isim && !o.cozuldu) {
+        const eb = document.createElement("button"); eb.className = "miniBtn basari"; eb.innerHTML = '<i data-lucide="award"></i> En İyi Seç';
         eb.onclick = async () => {
           if (MOD === "sunucu") { try { await api.enIyi(c.id); await tazeCiz(); konfeti(); toast("Çözüldü olarak işaretlendi! ✅"); } catch (e) { toast(e.message); } return; }
-          c.enIyi = true; o.cozuldu = true; // gönderi çözüldü olur
-          const k = kullanicilar.find(x => x.ad === c.yazar); // puan + rozet
+          c.enIyi = true; o.cozuldu = true;
+          const k = kullanicilar.find(x => x.ad === c.yazar);
           if (k) { k.puan = (k.puan || 0) + 10; if ((k.puan || 0) >= 10 && !k.rozetler.includes("Yardımsever")) k.rozetler.push("Yardımsever"); if ((k.puan || 0) >= 30 && !k.rozetler.includes("Çözüm Ustası")) k.rozetler.push("Çözüm Ustası"); if (o.ders === "Matematik" && !k.rozetler.includes("Matematik Ustası")) k.rozetler.push("Matematik Ustası"); }
           yaz("odevler", odevler); yaz("kullanicilar", kullanicilar);
-          bildir(c.yazar, `Cevabın en iyi seçildi! (+10 puan): ${o.baslik}`); // bildirim
+          bildir(c.yazar, `Cevabın en iyi seçildi! (+10 puan): ${o.baslik}`);
           listeleOdev(ara.value); aktifGoster(); konfeti(); toast("Çözüldü olarak işaretlendi! ✅");
         };
-        div.appendChild(eb);
+        cevapAksiyon.appendChild(eb);
       }
+      p.appendChild(cevapAksiyon);
+      cozumlerBolumu.appendChild(p);
     });
+
+    // Çözüm / Yorum Gönderme Formu
+    const cozumForm = document.createElement("div"); cozumForm.className = "cozumGirdiAlani";
+    const yi = document.createElement("input"); yi.placeholder = "Çözümünü veya açıklamalarını adım adım yaz... ✍️"; yi.className = "cozumGirdi";
+    const yb = document.createElement("button"); yb.innerHTML = '<i data-lucide="send"></i> Çözüm Yaz'; yb.className = "cozumGonderBtn";
+    yb.onclick = async () => {
+      if (!aktif) return toast("Giriş yap!"); if (!yi.value || !etikMi(yi.value)) return toast("Yorum yaz / etik olsun!");
+      if (MOD === "sunucu") { try { await api.yorumEkle(o.id, yi.value); if (isim !== aktif.ad) bildir(isim, `${aktif.ad} gönderine yorum yaptı: ${o.baslik}`); await tazeCiz(); } catch (e) { toast(e.message); } return; }
+      o.cevaplar.push({ id: idUret(), yazar: aktif.ad, metin: yi.value, yanitlar: [] }); yaz("odevler", odevler);
+      if (isim !== aktif.ad) bildir(isim, `${aktif.ad} gönderine yorum yaptı: ${o.baslik}`);
+      listeleOdev(ara.value); profilGoster();
+    };
+    cozumForm.append(yi, yb);
+    cozumlerBolumu.appendChild(cozumForm);
+
+    div.appendChild(cozumlerBolumu);
     alan.appendChild(div);
-    if (typeof videoAlanCiz === "function") videoAlanCiz(div, o); // video çözümler (yalnız sunucu modunda çizilir)
   });
   // İsimlere tıklayınca profil aç (akış içi)
   alan.querySelectorAll("[data-kisi]").forEach(a => a.onclick = e => { e.preventDefault(); goruntulenen = a.dataset.kisi; sayfaGoster("profil"); });
@@ -2389,3 +2461,29 @@ document.addEventListener("keydown", e => {
     }
   }, { passive: true });
 })();
+
+
+// --- Ders Çipleri ve Katlanabilir Sihirbaz Olayları ---
+function dersCipTazele(secilenDers = "") {
+  document.querySelectorAll(".dersCip").forEach(c => {
+    const aktifMi = (c.dataset.ders || "") === (secilenDers || "");
+    c.classList.toggle("aktif", aktifMi);
+    c.setAttribute("aria-selected", aktifMi ? "true" : "false");
+  });
+}
+document.querySelectorAll(".dersCip").forEach(cip => {
+  cip.onclick = () => {
+    const d = cip.dataset.ders || "";
+    filtreDers.value = d;
+    dersCipTazele(d);
+    tazeCiz(true);
+  };
+});
+const soruTetikleyici = document.getElementById("soruTetikleyici");
+if (soruTetikleyici) {
+  soruTetikleyici.onclick = () => { sihirbazAc(); paylasimBaslat(tur.value); };
+}
+const btnSihirbazKapat = document.getElementById("btnSihirbazKapat");
+if (btnSihirbazKapat) {
+  btnSihirbazKapat.onclick = () => sihirbazKapat();
+}

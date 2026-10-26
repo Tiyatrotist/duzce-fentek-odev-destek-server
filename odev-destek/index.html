@@ -33,24 +33,32 @@
       <div class="avatar" id="yanAvatar">?</div>
       <div class="yazi"><b id="yanAd">Misafir</b><br /><small id="yanRol">Giriş yap</small></div>
     </div>
+
+    <div class="yanGrupBaslik"><span class="yazi">AKADEMİK AKIŞ</span></div>
     <button class="yanOge" data-sayfa="akis"><i data-lucide="home"></i><span class="yazi">Ana Sayfa</span></button>
     <button class="yanOge" data-sayfa="kesfet"><i data-lucide="search"></i><span class="yazi">Keşfet</span></button>
-    <button class="yanOge" data-aksiyon="paylas"><i data-lucide="plus-circle"></i><span class="yazi">Paylaş</span></button>
+    <button class="yanOge" data-aksiyon="paylas"><i data-lucide="plus-circle"></i><span class="yazi">Soru Paylaş</span></button>
     <button class="yanOge" data-sayfa="hoca"><i data-lucide="graduation-cap"></i><span class="yazi">Öğretmene Sor</span></button>
     <button class="yanOge" data-sayfa="odalar"><i data-lucide="users"></i><span class="yazi">Çalışma Odaları</span></button>
     <button class="yanOge" data-sayfa="sohbet"><i data-lucide="bot"></i><span class="yazi">AI Asistan</span></button>
-    <button class="yanOge" data-sayfa="kaydedilenler"><i data-lucide="bookmark"></i><span class="yazi">Kaydedilenler</span></button>
+
+    <div class="yanGrupBaslik"><span class="yazi">ÇALIŞMA MASASI</span></div>
+    <button class="yanOge" data-sayfa="program"><i data-lucide="calendar-days"></i><span class="yazi">Ders Programı</span></button>
+    <button class="yanOge" data-sayfa="ekarne"><i data-lucide="file-text"></i><span class="yazi">E-Karne (Net Takip)</span></button>
     <button class="yanOge" data-sayfa="notlar"><i data-lucide="notebook"></i><span class="yazi">Notlarım</span></button>
+    <button class="yanOge" data-sayfa="kaydedilenler"><i data-lucide="bookmark"></i><span class="yazi">Kaydedilenler</span></button>
+
+    <div class="yanGrupBaslik"><span class="yazi">TOPLULUK</span></div>
     <button class="yanOge" data-sayfa="liderlik"><i data-lucide="trophy"></i><span class="yazi">Liderlik Tablosu</span></button>
     <button class="yanOge" data-sayfa="rozetler"><i data-lucide="award"></i><span class="yazi">Rozetlerim</span></button>
     <button class="yanOge" data-sayfa="bildirim"><i data-lucide="bell"></i><span class="yazi">Bildirimler</span></button>
-    <button class="yanOge" data-sayfa="profil"><i data-lucide="user"></i><span class="yazi">Profil</span></button>
-    <button class="yanOge" data-sayfa="program"><i data-lucide="calendar-days"></i><span class="yazi">Ders Programı</span></button>
-    <button class="yanOge" data-sayfa="ekarne"><i data-lucide="file-text"></i><span class="yazi">E-Karne</span></button>
-    <button class="yanOge" data-sayfa="hesap"><i data-lucide="key-round"></i><span class="yazi">Hesap</span></button>
+    <button class="yanOge" data-sayfa="kurallar"><i data-lucide="scroll-text"></i><span class="yazi">Kurallar</span></button>
+
+    <div class="yanGrupBaslik"><span class="yazi">HESAP & AYARLAR</span></div>
+    <button class="yanOge" data-sayfa="profil"><i data-lucide="user"></i><span class="yazi">Profilim</span></button>
+    <button class="yanOge" data-sayfa="hesap"><i data-lucide="key-round"></i><span class="yazi">Hesap / Giriş</span></button>
     <button class="yanOge" data-sayfa="denetim" id="yanDenetim" style="display:none"><i data-lucide="shield-check"></i><span class="yazi">Denetim</span></button>
     <button class="yanOge" data-sayfa="ayarlar"><i data-lucide="settings"></i><span class="yazi">Ayarlar</span></button>
-    <button class="yanOge" data-sayfa="kurallar"><i data-lucide="scroll-text"></i><span class="yazi">Topluluk Kuralları</span></button>
     <button class="yanOge" data-aksiyon="cikis"><i data-lucide="log-out"></i><span class="yazi">Çıkış</span></button>
     <div class="yanAlt">
       <label class="anahtar" title="Karanlık mod"><input type="checkbox" id="btnKaranlik" /><span></span><span class="yazi">Karanlık</span></label>
@@ -60,32 +68,40 @@
   <div id="karartma"></div>
   <div class="kabuk">
   <div class="ana">
-  <!-- Yapışkan üst bar: logo, hamburger, arama, bildirim, profil -->
-  <div id="ustBar">
-    <button id="btnHamburger" aria-label="Menüyü aç/kapat" aria-expanded="false" aria-controls="yanMenu"><i data-lucide="menu"></i></button>
-    <img src="logo.jpeg" alt="Düzce FENTEK Logo" class="logoGorsel" />
-    <b>Düzce FENTEK Ödev Destek</b>
-    <input id="ustArama" placeholder="Ara... ( / )" aria-label="Genel arama" />
-    <button id="ustZil" aria-label="Bildirimler"><i data-lucide="bell"></i><span id="ustBildirim"></span></button>
-    <button id="ustProfil" aria-label="Profilim"><i data-lucide="user"></i></button>
-  </div>
-  <!-- Üst başlık: logo + ad yanda -->
-  <header>
-    <div class="baslikSatir">
-      <img src="logo.jpeg" alt="Düzce FENTEK Logo" class="logoGorsel buyuk" />
-      <h1>Düzce FENTEK Ödev Destek</h1>
+  <!-- Birleşik ve Duyarlı Üst Çubuk (Tek ve Net Site Başlığı) -->
+  <header id="ustBar" aria-label="Üst gezinti çubuğu">
+    <div class="ustSol">
+      <button id="btnHamburger" aria-label="Menüyü aç/kapat" aria-expanded="false" aria-controls="yanMenu"><i data-lucide="menu"></i></button>
+      <div class="ustMarka" title="Düzce FENTEK Ödev Destek">
+        <img src="logo.jpeg" alt="Düzce FENTEK Logo" class="logoGorsel" />
+        <div class="ustMarkaMetin">
+          <span class="ustMarkaAd">Düzce FENTEK</span>
+          <span class="ustMarkaEtiket">Ödev Destek</span>
+        </div>
+      </div>
     </div>
-    <p>Ödevini paylaş, akranından öğren. Olmazsa hocaya sor.</p>
-    <p id="aktifKullanici">👤 Giriş yapılmadı</p>
-    <p id="modBilgi" class="ipucu">💾 Yerel mod</p>
-    <button id="btnTekrarDene" style="display:none">🔄 Tekrar dene</button>
+    <div class="ustOrta">
+      <div class="ustAramaKutusu">
+        <i data-lucide="search" class="ustAramaIkon"></i>
+        <input id="ustArama" placeholder="Ders, konu veya soru ara... ( / )" aria-label="Genel arama" />
+      </div>
+    </div>
+    <div class="ustSag">
+      <div class="ustDurumHap" title="Bağlantı durumu">
+        <span id="modBilgi" class="ipucu">💾 Yerel mod</span>
+        <button id="btnTekrarDene" style="display:none" title="Yeniden dene">🔄</button>
+      </div>
+      <button id="ustZil" aria-label="Bildirimler" title="Bildirimler"><i data-lucide="bell"></i><span id="ustBildirim"></span></button>
+      <button id="ustProfil" aria-label="Profilim" title="Profilim" class="ustProfilBtn">
+        <span id="aktifKullanici">👤 Giriş</span>
+      </button>
+    </div>
   </header>
 
-  <!-- Alt navigasyon: siyah hap menü, aktif altın olur -->
-  <!-- İpucu: 1-6 tuşları da bu sayfaları açar -->
+  <!-- Alt navigasyon: Parmak bölgesi (Thumb zone) erişimi -->
   <nav aria-label="Ana menü">
     <button id="btnAkis" title="Kısayol: 1"><i data-lucide="home"></i><small>Akış</small> <span id="bildirimSayi"></span></button>
-    <button id="btnKesfet" title="Kısayol: 2"><i data-lucide="search"></i><small>Keşfet</small></button>
+    <button id="btnKesfet" title="Kısayol: 2"><i data-lucide="compass"></i><small>Keşfet</small></button>
     <button id="btnHoca" title="Kısayol: 3"><i data-lucide="graduation-cap"></i><small>Öğretmen</small></button>
     <button id="btnProfil" title="Kısayol: 4"><i data-lucide="user"></i><small>Profil</small></button>
     <button id="btnKurallar" title="Kısayol: 5"><i data-lucide="scroll-text"></i><small>Kurallar</small></button>
@@ -94,75 +110,137 @@
 
   <!-- AKIŞ SAYFASI -->
   <section id="sayfaAkis">
-    <!-- Kahraman: bugünün sorusu + hızlı işlemler -->
+    <!-- Akademik Başlangıç ve Hızlı İşlemler Kartı -->
     <div class="kahraman">
-      <h2>Bugün ne öğrenmek istersin?</h2>
+      <div class="kahramanBaslik">
+        <h2>📚 Bugün ne öğrenmek istersin?</h2>
+        <p class="kahramanAlt">Sorunu paylaş, akranından öğren veya doğrulanmış öğretmenlere danış.</p>
+      </div>
       <div class="hizliIslem">
-        <button id="hizliSoru"><i data-lucide="help-circle"></i>Soru sor</button>
-        <button id="hizliAnlat"><i data-lucide="book-open"></i>Konu anlat</button>
-        <button id="hizliGrup"><i data-lucide="users"></i>Grup oluştur</button>
-        <button id="hizliAI"><i data-lucide="bot"></i>AI ile çalış</button>
+        <button id="hizliSoru"><i data-lucide="help-circle"></i>Soru Sor</button>
+        <button id="hizliAnlat"><i data-lucide="book-open"></i>Konu Özeti</button>
+        <button id="hizliGrup"><i data-lucide="users"></i>Çalışma Odası</button>
+        <button id="hizliAI"><i data-lucide="bot"></i>AI Asistan</button>
       </div>
     </div>
-    <h2>📸 Paylaş (sadece ders)</h2>
-    <p class="ipucu">⌨️ <kbd>1</kbd>-<kbd>6</kbd> sayfa • <kbd>/</kbd> arama • <kbd>N</kbd> yeni gönderi • <kbd>Ctrl</kbd>+<kbd>Enter</kbd> paylaş • <kbd>Esc</kbd> akışa dön</p>
-    <!-- Adım çubuğu: 4 adımda paylaşım -->
-    <div class="adimCubuk"><div id="adimBar"></div></div>
-    <div class="sihirbazAdim acik" id="adim1">
-      <b>1. Tür ve ders seç</b>
-      <!-- Gönderi türü: Soru / Çözüm / Not -->
-      <select id="tur" aria-label="Gönderi türü">
-        <option>Soru</option>
-        <option>Çözüm Paylaşımı</option>
-        <option>Konu Özeti</option>
-      </select>
-      <!-- Ders seçmeden paylaşılamaz (etik kural) -->
-      <select id="ders" aria-label="Ders (zorunlu)">
-        <option value="">Ders seç (zorunlu)</option>
-        <option>Matematik</option><option>Fizik</option><option>Kimya</option>
-        <option>Biyoloji</option><option>Türkçe</option><option>Tarih</option>
-        <option>İngilizce</option><option>Coğrafya</option><option>Diğer</option>
-      </select>
-      <select id="sinif" aria-label="Sınıf seviyesi">
-        <option>5. Sınıf</option><option>6. Sınıf</option><option>7. Sınıf</option>
-        <option>8. Sınıf</option><option>9. Sınıf</option><option>10. Sınıf</option>
-        <option>11. Sınıf</option><option>12. Sınıf</option><option>Mezun</option>
-      </select>
-      <button id="btnIleri1">İleri →</button>
-    </div>
-    <div class="sihirbazAdim" id="adim2">
-      <b>2. Sorunu yaz</b>
-      <input id="baslik" placeholder="Başlık" aria-label="Başlık" />
-      <textarea id="aciklama" placeholder="Sorunu anlat, çözüm yolunu yaz" aria-label="Açıklama"></textarea>
-      <button id="btnGeri2" class="ikincil">← Geri</button>
-      <button id="btnIleri2">İleri →</button>
-    </div>
-    <div class="sihirbazAdim" id="adim3">
-      <b>3. Fotoğraf ekle (isteğe bağlı, en fazla 4)</b>
-      <!-- Sürükle-bırak alanı: dosyayı buraya bırak ya da tıkla -->
-      <div class="birakAlan" id="birakAlan">📷 Sürükle-bırak ya da tıkla</div>
-      <input id="resimler" type="file" accept="image/*" multiple aria-label="Resimler" />
-      <div class="kucukOnizleme" id="onizThumb"></div>
-      <button id="btnGeri3" class="ikincil">← Geri</button>
-      <button id="btnIleri3">İleri →</button>
-    </div>
-    <div class="sihirbazAdim" id="adim4">
-      <b>4. Önizleme ve paylaş</b>
-      <div id="onizleme" class="kutu"></div>
-      <button id="btnGeri4" class="ikincil">← Geri</button>
-      <button id="btnEkle">Paylaş</button>
+
+    <!-- Katlanabilir Soru Paylaşım Kartı (Akışı boğmayan temiz yapı) -->
+    <div id="soruPaylasKutu" class="soruPaylasKutu">
+      <div id="soruTetikleyici" class="soruTetikleyici" role="button" tabindex="0" aria-label="Yeni soru sor veya özet paylaş">
+        <div class="avatar tetikAvatar" id="tetikAvatar">?</div>
+        <div class="tetikYazi">Dersini seç, sorunu yaz veya fotoğrafını yükle... ✍️</div>
+        <div class="tetikButonlar">
+          <span class="tetikRozet"><i data-lucide="camera"></i> Fotoğraf</span>
+          <span class="tetikRozet"><i data-lucide="file-text"></i> Özet</span>
+        </div>
+      </div>
+
+      <div id="soruSihirbazAlani" class="soruSihirbazAlani" style="display:none">
+        <div class="sihirbazBaslikSatir">
+          <h3>📸 Yeni Paylaşım (Sadece Ders İçeriği)</h3>
+          <button type="button" id="btnSihirbazKapat" class="sihirbazKapatBtn" aria-label="Sihirbazı Kapat">✕ Vazgeç</button>
+        </div>
+        <p class="ipucu">⌨️ <kbd>N</kbd> yeni gönderi • <kbd>Ctrl</kbd>+<kbd>Enter</kbd> paylaş • <kbd>Esc</kbd> kapat</p>
+        <div class="adimCubuk"><div id="adimBar"></div></div>
+
+        <div class="sihirbazAdim acik" id="adim1">
+          <b>1. Tür ve ders seç</b>
+          <select id="tur" aria-label="Gönderi türü">
+            <option>Soru</option>
+            <option>Çözüm Paylaşımı</option>
+            <option>Konu Özeti</option>
+          </select>
+          <select id="ders" aria-label="Ders (zorunlu)">
+            <option value="">Ders seç (zorunlu)</option>
+            <option>Matematik</option><option>Fizik</option><option>Kimya</option>
+            <option>Biyoloji</option><option>Türkçe</option><option>Tarih</option>
+            <option>İngilizce</option><option>Coğrafya</option><option>Diğer</option>
+          </select>
+          <select id="sinif" aria-label="Sınıf seviyesi">
+            <option>5. Sınıf</option><option>6. Sınıf</option><option>7. Sınıf</option>
+            <option>8. Sınıf</option><option>9. Sınıf</option><option>10. Sınıf</option>
+            <option>11. Sınıf</option><option>12. Sınıf</option><option>Mezun</option>
+          </select>
+          <button id="btnIleri1">İleri →</button>
+        </div>
+
+        <div class="sihirbazAdim" id="adim2">
+          <b>2. Sorunu yaz</b>
+          <input id="baslik" placeholder="Başlık (örn: Polinomlarda Kalan Bulma)" aria-label="Başlık" />
+          <textarea id="aciklama" placeholder="Sorunu anlat, takıldığın yeri veya çözüm adımlarını detaylandır" aria-label="Açıklama"></textarea>
+          <button id="btnGeri2" class="ikincil">← Geri</button>
+          <button id="btnIleri2">İleri →</button>
+        </div>
+
+        <div class="sihirbazAdim" id="adim3">
+          <b>3. Fotoğraf ekle (isteğe bağlı, en fazla 4)</b>
+          <div class="birakAlan" id="birakAlan">📷 Sürükle-bırak ya da dosya seçmek için tıkla</div>
+          <input id="resimler" type="file" accept="image/*" multiple aria-label="Resimler" />
+          <div class="kucukOnizleme" id="onizThumb"></div>
+          <button id="btnGeri3" class="ikincil">← Geri</button>
+          <button id="btnIleri3">İleri →</button>
+        </div>
+
+        <div class="sihirbazAdim" id="adim4">
+          <b>4. Önizleme ve paylaş</b>
+          <div id="onizleme" class="kutu"></div>
+          <button id="btnGeri4" class="ikincil">← Geri</button>
+          <button id="btnEkle">Paylaş</button>
+        </div>
+      </div>
     </div>
 
-    <h2>🔍 Filtrele</h2>
-    <input id="ara" placeholder="Ara (başlık / açıklama)" />
-    <select id="filtreDers"><option value="">Tüm dersler</option></select>
-    <select id="filtreTur"><option value="">Tüm türler</option><option>Soru</option><option>Çözüm Paylaşımı</option><option>Konu Özeti</option></select>
-    <select id="filtreDurum"><option value="">Tümü</option><option value="bekleyen">Çözülmemiş</option><option value="cozuldu">Çözülmüş</option></select>
-    <select id="siralama"><option value="yeni">En yeni</option><option value="populer">En popüler</option></select>
+    <!-- Düzenli Filtreleme ve Arama Araç Çubuğu -->
+    <div class="filtreKapsayici">
+      <!-- Yatay Kaydırılabilir Ders Çipleri (Hızlı Süzme) -->
+      <div class="dersCipsleri" id="dersCipsleri" role="tablist" aria-label="Ders filtreleri">
+        <button type="button" class="dersCip aktif" data-ders="" role="tab" aria-selected="true">🐝 Tümü</button>
+        <button type="button" class="dersCip" data-ders="Matematik" role="tab" aria-selected="false">📐 Matematik</button>
+        <button type="button" class="dersCip" data-ders="Fizik" role="tab" aria-selected="false">⚡ Fizik</button>
+        <button type="button" class="dersCip" data-ders="Kimya" role="tab" aria-selected="false">🧪 Kimya</button>
+        <button type="button" class="dersCip" data-ders="Biyoloji" role="tab" aria-selected="false">🔬 Biyoloji</button>
+        <button type="button" class="dersCip" data-ders="Türkçe" role="tab" aria-selected="false">📖 Türkçe</button>
+        <button type="button" class="dersCip" data-ders="Tarih" role="tab" aria-selected="false">🏛️ Tarih</button>
+        <button type="button" class="dersCip" data-ders="İngilizce" role="tab" aria-selected="false">🌍 İngilizce</button>
+        <button type="button" class="dersCip" data-ders="Coğrafya" role="tab" aria-selected="false">🗺️ Coğrafya</button>
+      </div>
 
-    <h2>Akış</h2>
-    <!-- Hikaye şeridi: son çözülenler, tıkla o derse süz -->
+      <div class="filtreKontrolPaneli">
+        <div class="filtreAramaSatir">
+          <i data-lucide="search" class="filtreAramaIkon"></i>
+          <input id="ara" placeholder="Sorularda ara (başlık veya açıklama)..." aria-label="Sorularda ara" />
+        </div>
+        <div class="filtreSecimGrup">
+          <select id="filtreDers" style="display:none"><option value="">Tüm dersler</option></select>
+          <select id="filtreTur" aria-label="Gönderi türü">
+            <option value="">Tüm türler</option>
+            <option>Soru</option>
+            <option>Çözüm Paylaşımı</option>
+            <option>Konu Özeti</option>
+          </select>
+          <select id="filtreDurum" aria-label="Çözüm durumu">
+            <option value="">Tüm durumlar</option>
+            <option value="bekleyen">⏳ Çözüm Bekleyen</option>
+            <option value="cozuldu">✅ Çözülenler</option>
+          </select>
+          <select id="siralama" aria-label="Sıralama ölçütü">
+            <option value="yeni">🕒 En Yeni</option>
+            <option value="populer">🔥 En Popüler</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Son Çözülen Sorular (Bal Peteği Şeridi) -->
+    <div class="seritBaslik">
+      <h3>✨ Son Çözülenler</h3>
+      <small class="ipucu">Bir derse dokunarak doğrudan filtreleyebilirsin</small>
+    </div>
     <div id="cozulenSerit" class="serit"></div>
+
+    <div class="akisBaslikSatir">
+      <h2>📝 Soru & Çözüm Akışı</h2>
+    </div>
     <div id="odevListesi"></div>
     <button id="btnDaha">Daha fazla göster</button>
   </section>
