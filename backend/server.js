@@ -23,7 +23,7 @@ const GIZLI = process.env.JWT_SECRET; // bilet imzası
 app.use(helmet()); // güvenli başlıklar
 // Aynı adres hem arayüzü hem API'yi sunar; yedekler ve gizli dosyalar sunulmaz.
 const arayuzKok = require("path").join(__dirname, "..", "odev-destek");
-const arayuzDosyalari = ["index.html", "style.css", "app.js", "api.js", "program-kuyruk.js", "video.js", "manifest.json", "sw.js"];
+const arayuzDosyalari = ["index.html", "style.css", "app.js", "api.js", "program-kuyruk.js", "video.js", "manifest.json", "sw.js", "logo.jpeg"];
 const arayuzCsp = helmet.contentSecurityPolicy({ directives: {
   "script-src": ["'self'", "https://unpkg.com/lucide@1.57.0/dist/umd/lucide.min.js"],
   "upgrade-insecure-requests": process.env.URETIM === "1" ? [] : null
