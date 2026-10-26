@@ -6,7 +6,6 @@ Eğitim paylaşımı, soru-cevap, kişisel notlar, program, AI destekli denetim,
 - backend: Node.js API, SQLite, testler ve AI/video modülleri.
 - odev-destek: web arayüzü.
 - EKSIKLER.md: doğrulanmış eksikler ve doğrulama sınırları.
-- OPEN-CODE-PROMPT.md: aşamalı geliştirme görevi.
 
 ## Yerel kurulum
 1. node:sqlite destekleyen Node.js sürümünü kullanın (başlatıcı en az 22 kontrol ediyor; kullandığınız sürümde desteği doğrulayın).
