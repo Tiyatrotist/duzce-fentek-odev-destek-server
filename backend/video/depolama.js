@@ -33,7 +33,7 @@ function orijinalYaz(tur, anahtar, ext, kaynakTmp) {
   const hedef = yolBul(tur, anahtar, ext);
   const boyut = fs.statSync(kaynakTmp).size;
   if (boyut > AYAR.enFazlaBoyutMB * 1024 * 1024) { try { fs.unlinkSync(kaynakTmp); } catch {} throw new Error("Boyut sınırı aşıldı"); }
-  fs.renameSync(kaynakTmp, hedef); // atomik taşıma (aynı birimde)
+  try { fs.renameSync(kaynakTmp, hedef); } catch (err) { if (err && (err.code === "EXDEV" || err.code === "EPERM")) { fs.copyFileSync(kaynakTmp, hedef); try { fs.unlinkSync(kaynakTmp); } catch {} } else { throw err; } }
   return hedef;
 }
 

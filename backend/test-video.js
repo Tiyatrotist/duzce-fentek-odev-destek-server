@@ -443,7 +443,7 @@ describe("Video: saklama süresi ve depolama kotası", () => {
     const db = require("./db");
     const depo = require("./video/depolama");
     const anahtar = depo.anahtarUret();
-    const tmp = require("path").join(require("os").tmpdir(), "ret-" + anahtar + ".part");
+    const tmp = depo.yolBul("gecici", anahtar, "part");
     require("fs").writeFileSync(tmp, mp4(3));
     depo.orijinalYaz("orijinal", anahtar, "mp4", tmp); // gerçek dosya
     db.prepare(`INSERT INTO video_cevaplar(gonderi_id, yazar, baslik, durum, saklama_anahtari,

@@ -42,7 +42,7 @@ function yukle({ kullanici, gonderi_id, baslik = "", aciklama = "", mime = "", u
     return { hata: "Aynı videoyu daha önce yüklediniz (yinelenen içerik).", kod: 409 };
 
   const anahtar = DEPO.anahtarUret(); // öngörülemez
-  const tmp = require("path").join(require("os").tmpdir(), "vid-" + anahtar + ".part");
+  const tmp = DEPO.yolBul("gecici", anahtar, "part");
   fs.writeFileSync(tmp, tampon, { mode: 0o600 });
   try { DEPO.orijinalYaz("orijinal", anahtar, d.bicim, tmp); }
   catch (e) { try { fs.unlinkSync(tmp); } catch {} return { hata: "Dosya kaydedilemedi: " + e.message, kod: 500 }; }
