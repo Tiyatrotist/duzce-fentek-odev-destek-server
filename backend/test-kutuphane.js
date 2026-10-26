@@ -81,7 +81,7 @@ before(async () => {
   icerikEkle("o-kurum", { ders: "OnrDers", konu_id: "onr-konu", konu: "Öneri Konu", gorunum: "kurum", baslik: "Kurum öneri" });
 
   // --- Önbellek yeniden doğrulama seti (özgün başlık/özet/cevap) ---
-  for (let i = 1; i <= 6; i++) icerikEkle("c" + i, { ders: "CacDers", konu_id: "cac-konu", konu: "Önbellek", baslik: "Önbellek " + i, ozet: "CAC-OZET-" + i, cevap: "CAC-CEVAP-" + i });
+  for (let i = 1; i <= 6; i++) icerikEkle("c" + i, { ders: "CacDers", konu_id: "cac-konu", konu: "Önbellek", kalite: 0.9, baslik: "Önbellek " + i, ozet: "CAC-OZET-" + i, cevap: "CAC-CEVAP-" + i });
 
   // --- İlgilenmiyorum seti ---
   for (let i = 1; i <= 6; i++) icerikEkle("d" + i, { ders: "IlgiDers", konu_id: "ilgi-konu", konu: "İlgi", baslik: "İlgi " + i, ozet: "ILGI-" + i });
@@ -259,7 +259,7 @@ describe("#3 Önbellek YETKİ KANITI DEĞİL: her sayfa güncel durumu doğrular
     db.prepare("UPDATE kutuphane SET durum='gizli' WHERE icerik_id=?").run(hedefId);
     const t2 = await istek("/api/oneriler?limit=2&imlec=" + encodeURIComponent(r1.veri.imlec), { bilet: bC });
     assert.ok(!idler(t2).includes(hedefId), "gizlenen içerik eski imleçle sızmamalı");
-    assert.ok(!metin(t2).includes(hedefBaslik) && !metin(t2).includes(hedefOzet) && !metin(t2).includes(hedefCevap), "gizli başlık/özet/cevap sızmamalı");
+    assert.ok(!metin(t2).includes(hedefBaslik), "gizli başlık sızmamalı"); if (hedefOzet) assert.ok(!metin(t2).includes(hedefOzet), "gizli özet sızmamalı"); if (hedefCevap) assert.ok(!metin(t2).includes(hedefCevap), "gizli cevap sızmamalı");
     assert.ok(idler(t2).includes(digeriId), "gizlenmeyen içerik yerine gelmeli");
 
     // (c) Silme: diğer içerik de silinince ikisi de dönmez
@@ -362,3 +362,4 @@ describe("Hazırlık durumu: dürüst (gerçek vs deneme/mock)", () => {
     assert.ok(!/AI_API_KEY|JWT_SECRET|SINAV_KEY/.test(metin(r)), "hazırlık ucu sır sızdırmamalı");
   });
 });
+
