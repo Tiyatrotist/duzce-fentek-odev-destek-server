@@ -7,6 +7,8 @@
   <meta name="theme-color" content="#f59e0b" />
   <meta name="description" content="Düzce FENTEK Ödev Destek: ödevini paylaş, akranından öğren, öğretmene sor." />
   <title>Düzce FENTEK Ödev Destek</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpeg" />
+  <link rel="apple-touch-icon" href="logo.jpeg" />
   <link rel="manifest" href="manifest.json" />
   <!-- Okunaklı font: Nunito -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,6 +22,13 @@
   <div id="kenarBolge" aria-hidden="true"></div>
   <!-- Yan menü: dar ikonlar, hover/hamburger ile genişler -->
   <aside id="yanMenu" aria-label="Yan menü">
+    <div class="yanBaslik" title="Düzce FENTEK Ödev Destek">
+      <img src="logo.jpeg" alt="Düzce FENTEK Logo" class="logoGorsel yanLogo" />
+      <div class="yazi">
+        <span class="yanMarkaAd">Düzce FENTEK</span>
+        <span class="yanMarkaSlogan">Ödev Destek</span>
+      </div>
+    </div>
     <div class="yanUst" id="yanUst" title="Hesabım">
       <div class="avatar" id="yanAvatar">?</div>
       <div class="yazi"><b id="yanAd">Misafir</b><br /><small id="yanRol">Giriş yap</small></div>
@@ -54,7 +63,7 @@
   <!-- Yapışkan üst bar: logo, hamburger, arama, bildirim, profil -->
   <div id="ustBar">
     <button id="btnHamburger" aria-label="Menüyü aç/kapat" aria-expanded="false" aria-controls="yanMenu"><i data-lucide="menu"></i></button>
-    <span class="logoYazi" aria-hidden="true">F</span>
+    <img src="logo.jpeg" alt="Düzce FENTEK Logo" class="logoGorsel" />
     <b>Düzce FENTEK Ödev Destek</b>
     <input id="ustArama" placeholder="Ara... ( / )" aria-label="Genel arama" />
     <button id="ustZil" aria-label="Bildirimler"><i data-lucide="bell"></i><span id="ustBildirim"></span></button>
@@ -63,7 +72,7 @@
   <!-- Üst başlık: logo + ad yanda -->
   <header>
     <div class="baslikSatir">
-      <span class="logoYazi buyuk" aria-hidden="true">F</span>
+      <img src="logo.jpeg" alt="Düzce FENTEK Logo" class="logoGorsel buyuk" />
       <h1>Düzce FENTEK Ödev Destek</h1>
     </div>
     <p>Ödevini paylaş, akranından öğren. Olmazsa hocaya sor.</p>

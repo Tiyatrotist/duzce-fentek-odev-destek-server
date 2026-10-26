@@ -1074,6 +1074,42 @@ body.menu-sabit #yanMenu {
 body.menu-sabit #yanMenu .yazi {
   display: inline;
 }
+/* Yan menü başlık ve marka alanı */
+.yanBaslik {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px 10px;
+  border-bottom: 1px solid var(--cizgi);
+  margin-bottom: 4px;
+}
+.yanBaslik .logoGorsel.yanLogo {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+}
+.yanBaslik .yazi {
+  display: none;
+  line-height: 1.25;
+}
+.yanBaslik .yanMarkaAd {
+  display: block;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--yazi);
+  letter-spacing: -0.2px;
+}
+.yanBaslik .yanMarkaSlogan {
+  display: block;
+  font-size: 11px;
+  color: var(--ana-koyu);
+  font-weight: 700;
+}
+#yanMenu.acik .yanBaslik .yazi,
+body.menu-sabit #yanMenu .yanBaslik .yazi {
+  display: block;
+}
+
 .yanUst {
   display: flex;
   align-items: center;
@@ -1197,6 +1233,84 @@ body.menu-sabit #yanMenu .yazi {
   font-size: 28px;
   border: 3px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Düzce FENTEK Logo Görseli: temiz beyaz zemin, zarif köşe yuvarlatma, 1px sınır, hafif gölge ve hover mikro-etkileşimi */
+.logoGorsel {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  object-fit: contain;
+  padding: 2px;
+  display: inline-block;
+  flex: 0 0 auto;
+  vertical-align: middle;
+  transition: transform 0.2s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.logoGorsel:hover {
+  transform: scale(1.06);
+  box-shadow: 0 3px 8px rgba(217, 119, 6, 0.22);
+  border-color: rgba(217, 119, 6, 0.35);
+}
+.logoGorsel:active {
+  transform: scale(0.96);
+}
+.logoGorsel.buyuk {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+}
+.logoGorsel.buyuk:hover {
+  transform: scale(1.04) rotate(0.5deg);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+.logoGorsel.buyuk:active {
+  transform: scale(0.97);
+}
+.logoGorsel.yanLogo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  padding: 2px;
+}
+
+/* Karanlık mod uyumu */
+body.karanlik .logoGorsel,
+[data-tema="koyu"] .logoGorsel {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+body.karanlik .logoGorsel:hover,
+[data-tema="koyu"] .logoGorsel:hover {
+  border-color: rgba(245, 158, 11, 0.45);
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.25);
+}
+body.karanlik .logoGorsel.buyuk,
+[data-tema="koyu"] .logoGorsel.buyuk {
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+}
+body.karanlik .yanBaslik .yanMarkaSlogan,
+[data-tema="koyu"] .yanBaslik .yanMarkaSlogan {
+  color: #fbbf24;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logoGorsel,
+  .logoGorsel:hover,
+  .logoGorsel:active,
+  .logoGorsel.buyuk,
+  .logoGorsel.buyuk:hover,
+  .logoGorsel.buyuk:active {
+    transform: none !important;
+    transition: none !important;
+  }
 }
 #ustArama {
   flex: 1;
